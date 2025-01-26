@@ -1,0 +1,64 @@
+name: typescript
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+    paths:
+      - 'typescript/**'
+  pull_request:
+    branches:
+      - main
+      - develop
+    paths:
+      - 'typescript/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    strategy:
+      matrix:
+        node-version: [22.x]
+        dir:
+          - 'typescript'
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v41
+        with:
+          files: ${{ matrix.dir }}/**
+
+      - name: Restore node modules cache
+        if: steps.changed-files.outputs.any_changed == 'true'
+        id: restore-node-modules-cache
+        uses: actions/cache/restore@v4
+        with:
+          path: ${{ matrix.dir }}/node_modules
+          key: ${{ runner.os }}-node-modules-cache-${{ matrix.dir }}-${{ hashFiles('${{ matrix.dir }}/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-modules-cache-${{ matrix.dir }}-
+      - name: Install dependencies
+        if: steps.changed-files.outputs.any_changed == 'true' && steps.restore-node-modules-cache.outputs.cache-hit != 'true'
+        working-directory: ${{ matrix.dir }}
+        run: npm ci
+
+      - name: Run tests
+        if: steps.changed-files.outputs.any_changed == 'true'
+        working-directory: ${{ matrix.dir }}
+        run: npm test
+
+      - name: Save node modules cache
+        if: steps.changed-files.outputs.any_changed == 'true' && steps.restore-node-modules-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: ${{ matrix.dir }}/node_modules
+          key: ${{ runner.os }}-node-modules-cache-${{ matrix.dir }}-${{ hashFiles('${{ matrix.dir }}/package-lock.json') }}
