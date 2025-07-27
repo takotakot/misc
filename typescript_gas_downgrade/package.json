@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "@google/clasp": "^3.0.6-alpha",
+    "@rollup/plugin-node-resolve": "^16.0.1",
     "@types/google-apps-script": "^1.0.99",
     "@types/jest": "^30.0.0",
     "@typescript-eslint/eslint-plugin": "^5.62.0",
