@@ -19,6 +19,27 @@
 - `available_from` (DATE): 有効期間開始日（将来の異動や組織変更を見越す）
 - `available_to` (DATE): 有効期間終了日。NULL は無期限
 
+### 社員・関係者 `persons`
+
+- `id` (INT64): 各人を一意に識別する ID
+- `business_name` (STRING): 表示名（氏名や職務表示など）
+- `email` (STRING): 連絡用メールアドレス
+- `ladder` (STRING): 職位レベル（例: L1, L2, L10 など）
+- `available_from` (DATE): 有効開始日
+- `available_to` (DATE): 有効終了日（NULL は無期限）
+
+### 配属 `org_member_relations`
+
+- `org_node_id` (INT64): 所属先の組織（`org_nodes.id`）
+- `person_id` (INT64): `persons.id`
+- `role` (STRING): 役割・役職名（例: '部長', 'メンバー'）
+- `is_secondment` (BOOLEAN) NOT NULL DEFAULT FALSE: 兼務／出向フラグ（TRUE = 兼務または出向）
+- `status` (STRING | NULL): 表示用ステータス（例: '休職', '出向先', '出向元' 等、自由入力）
+- `order_no` (INT64 | NULL): 同一組織内での配属の表示順を指定する数値（NULL は未指定）
+- `available_from` (DATE): 関係の有効開始日
+- `available_to` (DATE): 関係の有効終了日（NULL は無期限）
+- `note` (STRING | NULL): 任意の注記
+
 ## データ例
 
 ### 組織
@@ -33,6 +54,14 @@
 | 6   | 企画部   | 5         | 1        | 2025-01-01     | NULL         |
 | 7   | 営業部   | 5         | 2        | 2025-01-01     | NULL         |
 | 8   | 会社B    | NULL      | 2        | 2025-01-01     | NULL         |
+
+### 社員・関係者
+
+
+
+### 配属
+
+
 
 ## クエリ・出力例
 
