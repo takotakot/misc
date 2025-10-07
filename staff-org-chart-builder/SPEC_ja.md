@@ -124,8 +124,6 @@ fullname 型の組織出力は、各ノードについてルートからのパ�
 
 ### 階層列型組織出力
 
-level 別に列を持つ階層列型組織出力も提供できる。
-
 出力例:
 
 | id  | fullname                  | full_order_no | sortable_full_order_no | parent_id | order_no | depth | level_0 | level_1  | level_2 | level_3 | level_4 |
@@ -159,3 +157,10 @@ fullname 型組織出力 の、各組織ノードに対して、所属メンバ�
 | 会社A > 事業本部 > 営業部 | Benjamin Clerk       | AM          |                 true | NULL           | 1               |
 | 会社A > 事業本部 > 営業部 | Chloe Clerk          | L           |                false | parental leave | 2               |
 | 会社B                     | Bob Allen            | President   |                false | NULL           | 1               |
+
+### 階層列型人員構成図出力
+
+階層列型組織出力 の、各組織ノードに対して、所属メンバーを「配属」の `order_no` 順に列挙することができる。
+
+出力例:
+
