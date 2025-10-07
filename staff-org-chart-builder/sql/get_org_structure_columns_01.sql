@@ -5,17 +5,18 @@
 WITH RECURSIVE org_tree AS (
   SELECT
     id
-  , name
-  , parent_id
-  , order_no
-  , 0 AS depth
-  , ARRAY[name] AS names
-  , ARRAY[CAST(order_no AS STRING)] AS orders
-  , CAST(name AS STRING) AS fullname
-  , CAST(order_no AS STRING) AS full_order_no
-  , LPAD(CAST(order_no AS STRING), 5, '0') AS sortable_full_order_no
+    , name
+    , parent_id
+    , order_no
+    , 0 AS depth
+    , ARRAY[name] AS names
+    , ARRAY[CAST(order_no AS STRING)] AS orders
+    , CAST(name AS STRING) AS fullname
+    , CAST(order_no AS STRING) AS full_order_no
+    , LPAD(CAST(order_no AS STRING), 5, '0') AS sortable_full_order_no
   FROM `staff_org_chart_builder.org_nodes`
-  WHERE parent_id IS NULL
+  WHERE
+    parent_id IS NULL
     AND (available_from IS NULL OR available_from <= CURRENT_DATE())
     AND (available_to IS NULL OR available_to >= CURRENT_DATE())
 
@@ -23,19 +24,20 @@ WITH RECURSIVE org_tree AS (
 
   SELECT
     c.id
-  , c.name
-  , c.parent_id
-  , c.order_no
-  , p.depth + 1 AS depth
-  , ARRAY_CONCAT(p.names, [c.name]) AS names
-  , ARRAY_CONCAT(p.orders, [CAST(c.order_no AS STRING)]) AS orders
-  , CONCAT(p.fullname, ' > ', c.name) AS fullname
-  , CONCAT(p.full_order_no, '/', CAST(c.order_no AS STRING)) AS full_order_no
-  , CONCAT(p.sortable_full_order_no, '/', LPAD(CAST(c.order_no AS STRING), 5, '0')) AS sortable_full_order_no
+    , c.name
+    , c.parent_id
+    , c.order_no
+    , p.depth + 1 AS depth
+    , ARRAY_CONCAT(p.names, [c.name]) AS names
+    , ARRAY_CONCAT(p.orders, [CAST(c.order_no AS STRING)]) AS orders
+    , CONCAT(p.fullname, ' > ', c.name) AS fullname
+    , CONCAT(p.full_order_no, '/', CAST(c.order_no AS STRING)) AS full_order_no
+    , CONCAT(p.sortable_full_order_no, '/', LPAD(CAST(c.order_no AS STRING), 5, '0')) AS sortable_full_order_no
   FROM `staff_org_chart_builder.org_nodes` AS c
-  JOIN org_tree AS p
+  INNER JOIN org_tree AS p
     ON c.parent_id = p.id
-  WHERE (c.available_from IS NULL OR c.available_from <= CURRENT_DATE())
+  WHERE
+    (c.available_from IS NULL OR c.available_from <= CURRENT_DATE())
     AND (c.available_to IS NULL OR c.available_to >= CURRENT_DATE())
 )
 
