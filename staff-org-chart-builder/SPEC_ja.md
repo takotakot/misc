@@ -57,11 +57,34 @@
 
 ### 社員・関係者
 
-
+|   id | business_name  | email                      | ladder | available_from | available_to |
+| ---: | -------------- | -------------------------- | ------ | -------------- | ------------ |
+|    1 | Alice Allen    | alice.allen@example.com    | L10    | 2025-01-01     | NULL         |
+|    2 | Bob Allen      | bob.allen@example.com      | L9     | 2025-01-01     | NULL         |
+|    3 | Charlie Allen  | charlie.allen@example.com  | L7     | 2025-01-01     | NULL         |
+|    4 | Andrew Brown   | andrew.brown@example.com   | L6     | 2025-01-01     | NULL         |
+|    5 | Bella Brown    | bella.brown@example.com    | L2     | 2025-01-01     | NULL         |
+|    6 | Cathy Brown    | cathy.brown@example.com    | L1     | 2025-01-01     | NULL         |
+|    7 | Amelia Clerk   | amelia.clerk@example.com   | L7     | 2025-01-01     | NULL         |
+|    8 | Benjamin Clerk | benjamin.clerk@example.com | L4     | 2025-01-01     | NULL         |
+|    9 | Chloe Clerk    | chloe.clerk@example.com    | L3     | 2025-01-01     | NULL         |
 
 ### 配属
 
-
+| org_node_id | person_id | role      | is_secondment | status | order_no | available_from | available_to | note |
+| ----------: | --------: | --------- | ------------: | ------ | -------: | -------------- | ------------ | ---- |
+|           1 |         1 | CEO       |         FALSE | NULL   |        1 | 2025-01-01     | NULL         | NULL |
+|           2 |         3 | HoD       |         FALSE | NULL   |        1 | 2025-01-01     | NULL         | NULL |
+|           3 |         3 | GM        |          TRUE | NULL   |        1 | 2025-01-01     | NULL         | NULL |
+|           3 |         5 | SA        |         FALSE | NULL   |        2 | 2025-01-01     | NULL         | NULL |
+|           4 |         4 | GM        |         FALSE | NULL   |        1 | 2025-01-01     | NULL         | NULL |
+|           4 |         6 | A         |         FALSE | NULL   |        3 | 2025-01-01     | NULL         | NULL |
+|           5 |         7 | HoD       |         FALSE | NULL   |        1 | 2025-01-01     | NULL         | NULL |
+|           6 |         7 | GM        |          TRUE | NULL   |        1 | 2025-01-01     | NULL         | NULL |
+|           6 |         8 | AM        |         FALSE | NULL   |        2 | 2025-01-01     | NULL         | NULL |
+|           7 |         8 | AM        |         FALSE | TRUE   |        1 | 2025-01-01     | NULL         | NULL |
+|           7 |         9 | L         |         FALSE | 育休   |        2 | 2025-01-01     | NULL         | NULL |
+|           8 |         2 | President |         FALSE | NULL   |        1 | 2025-01-01     | NULL         | NULL |
 
 ## クエリ・出力例
 
