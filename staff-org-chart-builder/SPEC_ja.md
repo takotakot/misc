@@ -138,3 +138,24 @@ fullname 型の組織出力は、各ノードについてルートからのパ�
 | 6   | 会社A > 事業本部 > 企画部 | 1/2/1         | 00001/00002/00001      | 5         | 1        |     2 | 会社A   | 事業本部 | 企画部  | NULL    | NULL    |
 | 7   | 会社A > 事業本部 > 営業部 | 1/2/2         | 00001/00002/00002      | 5         | 2        |     2 | 会社A   | 事業本部 | 営業部  | NULL    | NULL    |
 | 8   | 会社B                     | 2             | 00002                  | NULL      | 2        |     0 | 会社B   | NULL     | NULL    | NULL    | NULL    |
+
+### fullname 型人員構成図出力
+
+fullname 型組織出力 の、各組織ノードに対して、所属メンバーを「配属」の `order_no` 順に列挙することができる。
+
+出力例:
+
+| fullname                  | member_business_name | member_role | member_is_secondment | member_status  | member_order_no |
+| ------------------------- | -------------------- | ----------- | -------------------: | -------------- | --------------- |
+| 会社A                     | Alice Allen          | CEO         |                false | NULL           | 1               |
+| 会社A > 総務本部          | Charlie Allen        | HoD         |                false | NULL           | 1               |
+| 会社A > 総務本部 > 総務部 | Charlie Allen        | GM          |                 true | NULL           | 1               |
+| 会社A > 総務本部 > 総務部 | Bella Brown          | SA          |                false | NULL           | 2               |
+| 会社A > 総務本部 > 人事部 | Andrew Brown         | GM          |                false | NULL           | 1               |
+| 会社A > 総務本部 > 人事部 | Cathy Brown          | A           |                false | NULL           | 3               |
+| 会社A > 事業本部          | Amelia Clerk         | HoD         |                false | NULL           | 1               |
+| 会社A > 事業本部 > 企画部 | Amelia Clerk         | GM          |                false | NULL           | 1               |
+| 会社A > 事業本部 > 企画部 | Benjamin Clerk       | AM          |                false | NULL           | 2               |
+| 会社A > 事業本部 > 営業部 | Benjamin Clerk       | AM          |                 true | NULL           | 1               |
+| 会社A > 事業本部 > 営業部 | Chloe Clerk          | L           |                false | parental leave | 2               |
+| 会社B                     | Bob Allen            | President   |                false | NULL           | 1               |
