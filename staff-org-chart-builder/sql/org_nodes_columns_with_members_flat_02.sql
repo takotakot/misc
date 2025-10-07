@@ -17,6 +17,7 @@ WITH RECURSIVE org_tree AS (
   FROM `staff_org_chart_builder.org_nodes`
   WHERE
     parent_id IS NULL
+    AND name IS NOT NULL
     AND (available_from IS NULL OR available_from <= CURRENT_DATE())
     AND (available_to IS NULL OR available_to >= CURRENT_DATE())
 
@@ -37,7 +38,8 @@ WITH RECURSIVE org_tree AS (
   INNER JOIN org_tree AS p
     ON c.parent_id = p.id
   WHERE
-    (c.available_from IS NULL OR c.available_from <= CURRENT_DATE())
+    c.name IS NOT NULL
+    AND (c.available_from IS NULL OR c.available_from <= CURRENT_DATE())
     AND (c.available_to IS NULL OR c.available_to >= CURRENT_DATE())
 )
 
