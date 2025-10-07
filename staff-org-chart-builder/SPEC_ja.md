@@ -166,3 +166,17 @@ fullname 型組織出力 の、各組織ノードに対して、所属メンバ�
 
 出力例:
 
+| level_0 | level_1  | level_2 | level_3 | level_4 | business_name  | role      | is_secondment | status         |
+| ------- | -------- | ------- | ------- | ------- | -------------- | --------- | ------------: | -------------- |
+| 会社A   | NULL     | NULL    | NULL    | NULL    | Alice Allen    | CEO       |         false | NULL           |
+| 会社A   | 総務本部 | NULL    | NULL    | NULL    | Charlie Allen  | HoD       |         false | NULL           |
+| 会社A   | 総務本部 | 総務部  | NULL    | NULL    | Charlie Allen  | GM        |          true | NULL           |
+| 会社A   | 総務本部 | 総務部  | NULL    | NULL    | Bella Brown    | SA        |         false | NULL           |
+| 会社A   | 総務本部 | 人事部  | NULL    | NULL    | Andrew Brown   | GM        |         false | NULL           |
+| 会社A   | 総務本部 | 人事部  | NULL    | NULL    | Cathy Brown    | A         |         false | NULL           |
+| 会社A   | 事業本部 | NULL    | NULL    | NULL    | Amelia Clerk   | HoD       |         false | NULL           |
+| 会社A   | 事業本部 | 企画部  | NULL    | NULL    | Amelia Clerk   | GM        |         false | NULL           |
+| 会社A   | 事業本部 | 企画部  | NULL    | NULL    | Benjamin Clerk | AM        |         false | NULL           |
+| 会社A   | 事業本部 | 営業部  | NULL    | NULL    | Benjamin Clerk | AM        |          true | NULL           |
+| 会社A   | 事業本部 | 営業部  | NULL    | NULL    | Chloe Clerk    | L         |         false | parental leave |
+| 会社B   | NULL     | NULL    | NULL    | NULL    | Bob Allen      | President |         false | NULL           |
