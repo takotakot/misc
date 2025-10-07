@@ -124,6 +124,8 @@ fullname 型の組織出力は、各ノードについてルートからのパ�
 
 ### 階層列型組織出力
 
+level 別に列を持つ階層列型組織出力も提供できる。文字列連結ではなく「列」を利用するため、フィルタや検索が容易になる。
+
 出力例:
 
 | id  | fullname                  | full_order_no | sortable_full_order_no | parent_id | order_no | depth | level_0 | level_1  | level_2 | level_3 | level_4 |
