@@ -1,6 +1,6 @@
 import { SheetRepository } from '../storage/sheet-repository';
 import { ApiClient } from '../infrastructure/api-client';
-import { ApiResult } from '../types/index';
+import { ApiResult, SyncResult } from '../types/index';
 
 export class SyncItemsUseCase {
   private sheetRepository: SheetRepository;
@@ -11,12 +11,7 @@ export class SyncItemsUseCase {
     this.apiClient = apiClient;
   }
 
-  public execute(): {
-    total: number;
-    success: number;
-    failed: number;
-    logs: string[];
-  } {
+  public execute(): SyncResult {
     const items = this.sheetRepository.getFilteredItems();
     const logs: string[] = [];
     let successCount = 0;

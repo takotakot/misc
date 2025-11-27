@@ -1,13 +1,10 @@
+import { SyncResult } from '../types/index';
+
 /**
  * Displays a modal dialog with the sync results.
  * @param result The result object containing total, success, failed counts and logs.
  */
-export function showResultDialog(result: {
-  total: number;
-  success: number;
-  failed: number;
-  logs: string[];
-}): void {
+export function showResultDialog(result: SyncResult): void {
   const ui = SpreadsheetApp.getUi();
 
   const htmlContent = `

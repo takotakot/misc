@@ -5,3 +5,10 @@ export interface ApiResult {
   message: string;
   data?: any;
 }
+
+export interface SyncResult {
+  total: number;
+  success: number;
+  failed: number;
+  logs: string[];
+}
