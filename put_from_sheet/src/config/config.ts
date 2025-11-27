@@ -1,3 +1,6 @@
+/**
+ * Application configuration constants.
+ */
 export const Config = {
   SHEET_NAMES: {
     INPUT: 'input',
