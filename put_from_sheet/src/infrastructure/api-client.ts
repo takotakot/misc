@@ -3,6 +3,11 @@ import { Item } from '../domain/item';
 import { ApiResult } from '../types/index';
 
 export class ApiClient {
+  /**
+   * Sends a PUT request to the API with the item data.
+   * @param item The item to send.
+   * @returns The result of the API call.
+   */
   public putItem(item: Item): ApiResult {
     const url = Config.API.ENDPOINT;
     const payload = {
