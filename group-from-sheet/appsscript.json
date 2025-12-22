@@ -1,0 +1,14 @@
+{
+  "timeZone": "Asia/Tokyo",
+  "dependencies": {
+    "enabledAdvancedServices": [
+      {
+        "userSymbol": "CloudIdentityGroups",
+        "version": "v1",
+        "serviceId": "cloud_identity_groups"
+      }
+    ]
+  },
+  "exceptionLogging": "STACKDRIVER",
+  "runtimeVersion": "V8"
+}
