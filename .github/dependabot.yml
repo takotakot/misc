@@ -3,6 +3,18 @@
 version: 2
 updates:
   - package-ecosystem: "npm"
+    directory: "/group-from-sheet"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "npm"
+    directory: "/put_from_sheet"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "npm"
     directory: "/typescript"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "npm"
+    directory: "/typescript_gas_downgrade"
     schedule:
       interval: "weekly"
