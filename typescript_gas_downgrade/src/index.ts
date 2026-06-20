@@ -1,5 +1,5 @@
-import { createActor } from 'xstate';
-import { counterMachine } from './counter';
+import {createActor} from 'xstate';
+import {counterMachine} from './counter';
 
 /**
  * スプレッドシートを開いたときに自動実行される GAS エントリポイント
@@ -22,12 +22,12 @@ function executeCounterFunction() {
 
   const actor = createActor(counterMachine);
   actor.start();
-  actor.send({ type: 'INCREMENT' });
+  actor.send({type: 'INCREMENT'});
   let snapshot = actor.getSnapshot();
   console.log(snapshot.context.count);
   // ui.prompt(`Current count: ${snapshot.context.count}`);
 
-  actor.send({ type: 'INCREMENT' });
+  actor.send({type: 'INCREMENT'});
   snapshot = actor.getSnapshot();
   console.log(snapshot.context.count);
   // ui.prompt(`Current count: ${snapshot.context.count}`);
