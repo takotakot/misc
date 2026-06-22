@@ -1,6 +1,6 @@
-import { Config } from '../config/config';
-import { Item } from '../domain/item';
-import { ApiResult } from '../types/index';
+import {Config} from '../config/config';
+import {Item} from '../domain/item';
+import {ApiResult} from '../types/index';
 
 export class ApiClient {
   /**
