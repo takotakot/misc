@@ -1,6 +1,6 @@
-import { SheetRepository } from '../storage/sheet-repository';
-import { ApiClient } from '../infrastructure/api-client';
-import { ApiResult, SyncResult } from '../types/index';
+import {SheetRepository} from '../storage/sheet-repository';
+import {ApiClient} from '../infrastructure/api-client';
+import {ApiResult, SyncResult} from '../types/index';
 
 export class SyncItemsUseCase {
   private sheetRepository: SheetRepository;
@@ -27,7 +27,7 @@ export class SyncItemsUseCase {
       } else {
         failedCount++;
         logs.push(
-          `[FAILED] JAN: ${item.jan}, Name: ${item.name}, Message: ${result.message}`
+          `[FAILED] JAN: ${item.jan}, Name: ${item.name}, Message: ${result.message}`,
         );
       }
     }

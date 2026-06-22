@@ -1,4 +1,4 @@
-import { SyncResult } from '../types/index';
+import {SyncResult} from '../types/index';
 
 /**
  * Displays a modal dialog with the sync results.

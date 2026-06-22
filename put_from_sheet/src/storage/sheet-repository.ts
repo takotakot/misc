@@ -1,9 +1,9 @@
-import { Config } from '../config/config';
-import { Item } from '../domain/item';
+import {Config} from '../config/config';
+import {Item} from '../domain/item';
 
 export class SheetRepository {
   private getSheet(
-    sheetName: string
+    sheetName: string,
   ): GoogleAppsScript.Spreadsheet.Sheet | null {
     const ss = SpreadsheetApp.getActiveSpreadsheet();
     return ss.getSheetByName(sheetName);

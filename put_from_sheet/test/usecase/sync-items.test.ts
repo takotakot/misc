@@ -1,7 +1,7 @@
-import { SyncItemsUseCase } from '../../src/usecase/sync-items';
-import { SheetRepository } from '../../src/storage/sheet-repository';
-import { ApiClient } from '../../src/infrastructure/api-client';
-import { Item } from '../../src/domain/item';
+import {SyncItemsUseCase} from '../../src/usecase/sync-items';
+import {SheetRepository} from '../../src/storage/sheet-repository';
+import {ApiClient} from '../../src/infrastructure/api-client';
+import {Item} from '../../src/domain/item';
 
 // Mock dependencies
 jest.mock('../../src/storage/sheet-repository');
@@ -20,12 +20,12 @@ describe('SyncItemsUseCase', () => {
 
   it('should sync items successfully', () => {
     const items: Item[] = [
-      { jan: '123', name: 'Item 1', isListed: true },
-      { jan: '456', name: 'Item 2', isListed: true },
+      {jan: '123', name: 'Item 1', isListed: true},
+      {jan: '456', name: 'Item 2', isListed: true},
     ];
 
     mockSheetRepository.getFilteredItems.mockReturnValue(items);
-    mockApiClient.putItem.mockReturnValue({ success: true, message: 'OK' });
+    mockApiClient.putItem.mockReturnValue({success: true, message: 'OK'});
 
     const result = useCase.execute();
 
@@ -36,10 +36,10 @@ describe('SyncItemsUseCase', () => {
   });
 
   it('should handle failed syncs', () => {
-    const items: Item[] = [{ jan: '123', name: 'Item 1', isListed: true }];
+    const items: Item[] = [{jan: '123', name: 'Item 1', isListed: true}];
 
     mockSheetRepository.getFilteredItems.mockReturnValue(items);
-    mockApiClient.putItem.mockReturnValue({ success: false, message: 'Error' });
+    mockApiClient.putItem.mockReturnValue({success: false, message: 'Error'});
 
     const result = useCase.execute();
 
