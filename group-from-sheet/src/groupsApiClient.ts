@@ -47,7 +47,7 @@ export const lookupGroup = (groupEmail: GroupEmail): GroupName | null => {
   } catch (e) {
     const error = e as Error;
     Logger.log(
-      `グループの検索中にエラーが発生しました (${groupEmail}): ${error.message}`
+      `グループの検索中にエラーが発生しました (${groupEmail}): ${error.message}`,
     );
     return null;
   }
@@ -83,7 +83,7 @@ export const listMembers = (groupName: GroupName): MembershipInfo[] => {
 
       const response = CloudIdentityGroups.Groups.Memberships.list(
         groupName,
-        options
+        options,
       );
 
       if (response.memberships) {
@@ -125,17 +125,17 @@ export const listMembers = (groupName: GroupName): MembershipInfo[] => {
  */
 export const addMember = (
   groupName: GroupName,
-  memberEmail: MemberEmail
+  memberEmail: MemberEmail,
 ): MembershipInfo | null => {
   try {
     const membership = {
-      preferredMemberKey: { id: memberEmail },
-      roles: [{ name: 'MEMBER' }],
+      preferredMemberKey: {id: memberEmail},
+      roles: [{name: 'MEMBER'}],
     };
 
     const result = CloudIdentityGroups.Groups.Memberships.create(
       membership,
-      groupName
+      groupName,
     );
 
     // API のレスポンスから情報を抽出
@@ -151,7 +151,7 @@ export const addMember = (
   } catch (e) {
     const error = e as Error;
     Logger.log(
-      `メンバーの追加に失敗しました (${memberEmail}): ${error.message}`
+      `メンバーの追加に失敗しました (${memberEmail}): ${error.message}`,
     );
     return null;
   }
@@ -166,7 +166,7 @@ export const addMember = (
  */
 export const removeMember = (
   groupName: GroupName,
-  memberEmail: MemberEmail
+  memberEmail: MemberEmail,
 ): boolean => {
   try {
     // 削除には membershipId が必要なので lookup して特定する
@@ -174,7 +174,7 @@ export const removeMember = (
 
     if (!membershipName) {
       Logger.log(
-        `対象メンバーが見つかりませんでした。既に削除されている可能性があります: ${memberEmail}`
+        `対象メンバーが見つかりませんでした。既に削除されている可能性があります: ${memberEmail}`,
       );
       return true;
     }
@@ -185,7 +185,7 @@ export const removeMember = (
   } catch (e) {
     const error = e as Error;
     Logger.log(
-      `メンバーの削除中にエラーが発生しました (${memberEmail}): ${error.message}`
+      `メンバーの削除中にエラーが発生しました (${memberEmail}): ${error.message}`,
     );
     return false;
   }
@@ -201,7 +201,7 @@ export const removeMember = (
  */
 const getMembershipName = (
   groupName: GroupName,
-  memberEmail: MemberEmail
+  memberEmail: MemberEmail,
 ): MembershipName | null => {
   try {
     const response = CloudIdentityGroups.Groups.Memberships.lookup(groupName, {
@@ -209,6 +209,7 @@ const getMembershipName = (
     });
 
     return (response?.name as MembershipName) || null;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (e) {
     // メンバーが存在しない場合は 404 エラーとなるが、ここでは null を返すことで対応
     return null;

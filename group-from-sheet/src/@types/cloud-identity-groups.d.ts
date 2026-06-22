@@ -5,7 +5,7 @@
 
 declare namespace CloudIdentityGroups {
   namespace Groups {
-    function lookup(params: { 'groupKey.id': string }): { name: string };
+    function lookup(params: {'groupKey.id': string}): {name: string};
 
     namespace Memberships {
       /** メンバー一覧取得時のオプション */
@@ -17,22 +17,22 @@ declare namespace CloudIdentityGroups {
 
       function list(
         groupName: string,
-        options?: ListOptions
+        options?: ListOptions,
       ): {
         memberships?: Array<{
           name: string;
-          preferredMemberKey?: { id: string };
-          roles?: Array<{ name: string }>;
+          preferredMemberKey?: {id: string};
+          roles?: Array<{name: string}>;
         }>;
         nextPageToken?: string;
       };
 
       function create(
         membership: {
-          preferredMemberKey: { id: string };
-          roles: Array<{ name: string }>;
+          preferredMemberKey: {id: string};
+          roles: Array<{name: string}>;
         },
-        groupName: string
+        groupName: string,
       ): {
         response: {
           name: string;
@@ -43,8 +43,8 @@ declare namespace CloudIdentityGroups {
 
       function lookup(
         groupName: string,
-        params: { 'memberKey.id': string }
-      ): { name: string } | null;
+        params: {'memberKey.id': string},
+      ): {name: string} | null;
     }
   }
 }

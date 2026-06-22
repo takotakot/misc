@@ -5,7 +5,7 @@
 /**
  * ブランド型（Branded Types）の基本定義
  */
-type Brand<K, T> = K & { __brand: T };
+type Brand<K, T> = K & {__brand: T};
 
 /**
  * Google グループの一意なリソース名

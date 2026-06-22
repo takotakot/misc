@@ -2,8 +2,8 @@
  * config モジュールのテスト
  */
 
-import { getExcludedUsers, getConfig } from '../src/config';
-import { MemberEmail } from '../src/types';
+import {getExcludedUsers, getConfig} from '../src/config';
+import {MemberEmail} from '../src/types';
 
 // GAS グローバルオブジェクトのモック
 (
@@ -49,7 +49,7 @@ describe('config', () => {
 
     it('カンマ区切りのメールアドレスを正しくパースする', () => {
       mockProperties.getProperty.mockReturnValue(
-        'admin@example.com,owner@example.com'
+        'admin@example.com,owner@example.com',
       );
 
       const result = getExcludedUsers();
@@ -58,31 +58,31 @@ describe('config', () => {
         new Set([
           'admin@example.com' as MemberEmail,
           'owner@example.com' as MemberEmail,
-        ])
+        ]),
       );
     });
 
     it('前後の空白をトリムする', () => {
       mockProperties.getProperty.mockReturnValue(
-        ' user1@example.com , user2@example.com '
+        ' user1@example.com , user2@example.com ',
       );
 
       const result = getExcludedUsers();
 
       expect(result).toEqual(
-        new Set(['user1@example.com', 'user2@example.com'])
+        new Set(['user1@example.com', 'user2@example.com']),
       );
     });
 
     it('空文字列のエントリを無視する', () => {
       mockProperties.getProperty.mockReturnValue(
-        'user1@example.com,,user2@example.com'
+        'user1@example.com,,user2@example.com',
       );
 
       const result = getExcludedUsers();
 
       expect(result).toEqual(
-        new Set(['user1@example.com', 'user2@example.com'])
+        new Set(['user1@example.com', 'user2@example.com']),
       );
     });
 
@@ -118,7 +118,7 @@ describe('config', () => {
       } as unknown as jest.Mocked<GoogleAppsScript.Spreadsheet.Spreadsheet>;
 
       (global.SpreadsheetApp.getActiveSpreadsheet as jest.Mock).mockReturnValue(
-        mockSpreadsheet
+        mockSpreadsheet,
       );
 
       const mockProperties = {
@@ -138,7 +138,7 @@ describe('config', () => {
       expect(config.lastOperationCellAddress).toBe('B2');
       expect(config.dataStartRow).toBe(2);
       expect(config.excludedUsers).toEqual(
-        new Set(['admin@example.com' as MemberEmail])
+        new Set(['admin@example.com' as MemberEmail]),
       );
     });
 
@@ -152,7 +152,7 @@ describe('config', () => {
 
     it('Spreadsheet が見つからない場合はエラーをスローする', () => {
       (global.SpreadsheetApp.getActiveSpreadsheet as jest.Mock).mockReturnValue(
-        null
+        null,
       );
 
       expect(() => {

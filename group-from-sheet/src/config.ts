@@ -33,12 +33,12 @@ import {
 export const getExcludedUsers = (): Set<MemberEmail> => {
   const properties = PropertiesService.getScriptProperties();
   const excludedUsersStr = properties.getProperty(
-    SCRIPT_PROPERTY_KEYS.EXCLUDED_USERS
+    SCRIPT_PROPERTY_KEYS.EXCLUDED_USERS,
   );
 
   if (!excludedUsersStr) {
     Logger.log(
-      '操作除外ユーザーリスト (EXCLUDED_USERS) が設定されていません。'
+      '操作除外ユーザーリスト (EXCLUDED_USERS) が設定されていません。',
     );
     return new Set<MemberEmail>();
   }
@@ -83,7 +83,7 @@ export const getConfig = (): Config => {
     if (!settingsSheet) missing.push(`'${SHEET_NAMES.SETTINGS}'`);
     if (!dataSheet) missing.push(`'${SHEET_NAMES.DATA}'`);
     throw new Error(
-      `必要なシートが見つかりません: ${missing.join(', ')}。シートを作成してください。`
+      `必要なシートが見つかりません: ${missing.join(', ')}。シートを作成してください。`,
     );
   }
 

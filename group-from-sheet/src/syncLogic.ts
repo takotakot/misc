@@ -31,7 +31,7 @@ import * as GroupsApi from './groupsApiClient';
 export const calculateDesiredState = (
   rows: SheetRow[],
   currentTime: Date,
-  excludedUsers: Set<MemberEmail>
+  excludedUsers: Set<MemberEmail>,
 ): Set<MemberEmail> => {
   const desiredEmails = rows
     .filter(row => !excludedUsers.has(row.memberEmail))
@@ -50,12 +50,12 @@ export const calculateDesiredState = (
  */
 export const calculateDiff = (
   desired: Set<MemberEmail>,
-  actual: Set<MemberEmail>
-): { toAdd: MemberEmail[]; toRemove: MemberEmail[] } => {
+  actual: Set<MemberEmail>,
+): {toAdd: MemberEmail[]; toRemove: MemberEmail[]} => {
   const toAdd = [...desired].filter(email => !actual.has(email));
   const toRemove = [...actual].filter(email => !desired.has(email));
 
-  return { toAdd, toRemove };
+  return {toAdd, toRemove};
 };
 
 /**
@@ -71,7 +71,7 @@ export const syncGroup = (
   groupEmail: GroupEmail,
   rows: SheetRow[],
   excludedUsers: Set<MemberEmail>,
-  currentTime: Date
+  currentTime: Date,
 ): SyncResult => {
   Logger.log(`[Sync] グループ同期を開始します: ${groupEmail}`);
 
@@ -85,14 +85,14 @@ export const syncGroup = (
   const currentMembers = GroupsApi.listMembers(groupName);
   // 操作除外ユーザーを考慮した、純粋な「操作対象メンバー」のみを抽出
   const currentEmails = new Set<MemberEmail>(
-    currentMembers.map(m => m.email).filter(email => !excludedUsers.has(email))
+    currentMembers.map(m => m.email).filter(email => !excludedUsers.has(email)),
   );
 
   // 3. スプレッドシートに基づくあるべき状態を計算
   const desiredState = calculateDesiredState(rows, currentTime, excludedUsers);
 
   // 4. 差分（追加/削除）の抽出
-  const { toAdd, toRemove } = calculateDiff(desiredState, currentEmails);
+  const {toAdd, toRemove} = calculateDiff(desiredState, currentEmails);
 
   // 5. 変更の適用（API実行）
   // 追加処理
@@ -102,16 +102,16 @@ export const syncGroup = (
 
   const addedEmails = addedMemberInfos.map(info => info.email);
   const addedMembershipNamesMap = new Map<MemberEmail, MembershipName>(
-    addedMemberInfos.map(info => [info.email, info.name])
+    addedMemberInfos.map(info => [info.email, info.name]),
   );
 
   // 削除処理
   const removedEmails = toRemove.filter(email =>
-    GroupsApi.removeMember(groupName, email)
+    GroupsApi.removeMember(groupName, email),
   );
 
   Logger.log(
-    `[Sync] 同期完了: ${groupEmail} (追加: ${addedEmails.length}, 削除: ${removedEmails.length})`
+    `[Sync] 同期完了: ${groupEmail} (追加: ${addedEmails.length}, 削除: ${removedEmails.length})`,
   );
 
   return {

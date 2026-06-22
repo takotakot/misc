@@ -19,11 +19,10 @@ import {
 } from '../src/types';
 
 // GAS グローバルオブジェクトのモック
-(
-  global as unknown as { Logger: Partial<GoogleAppsScript.Base.Logger> }
-).Logger = {
-  log: jest.fn(),
-};
+(global as unknown as {Logger: Partial<GoogleAppsScript.Base.Logger>}).Logger =
+  {
+    log: jest.fn(),
+  };
 
 describe('sheetService', () => {
   let mockSheet: jest.Mocked<GoogleAppsScript.Spreadsheet.Sheet>;
@@ -142,7 +141,7 @@ describe('sheetService', () => {
       const addedMembershipNames = new Map<MemberEmail, MembershipName>();
       addedMembershipNames.set(
         'm1@example.com' as MemberEmail,
-        'Member 1' as MembershipName
+        'Member 1' as MembershipName,
       );
 
       const results: SyncResult[] = [
@@ -158,7 +157,7 @@ describe('sheetService', () => {
 
       expect(mockSheet.getRange).toHaveBeenCalledWith(2, 5);
       expect(mockSheet.getRange(2, 5).setValue).toHaveBeenCalledWith(
-        'Member 1'
+        'Member 1',
       );
     });
 
@@ -197,7 +196,7 @@ describe('sheetService', () => {
             removed: [],
             addedMembershipNames: new Map<MemberEmail, MembershipName>(),
           },
-        ]
+        ],
       );
       expect(mockSheet.getRange).not.toHaveBeenCalled();
 
@@ -212,7 +211,7 @@ describe('sheetService', () => {
             removed: [],
             addedMembershipNames: new Map<MemberEmail, MembershipName>(),
           },
-        ]
+        ],
       );
       expect(mockSheet.getRange).not.toHaveBeenCalled();
     });
@@ -257,7 +256,7 @@ describe('sheetService', () => {
             removed: [],
             addedMembershipNames: new Map<MemberEmail, MembershipName>(),
           },
-        ]
+        ],
       );
       expect(mockSheet.getRange).not.toHaveBeenCalled();
 
@@ -272,7 +271,7 @@ describe('sheetService', () => {
             removed: ['u@example.com' as MemberEmail],
             addedMembershipNames: new Map<MemberEmail, MembershipName>(),
           },
-        ]
+        ],
       );
       expect(mockSheet.getRange).not.toHaveBeenCalled();
     });

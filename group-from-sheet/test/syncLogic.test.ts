@@ -7,18 +7,17 @@ import {
   calculateDiff,
   syncGroup,
 } from '../src/syncLogic';
-import { SheetRow, GroupEmail, MemberEmail } from '../src/types';
+import {SheetRow, GroupEmail, MemberEmail} from '../src/types';
 import * as GroupsApi from '../src/groupsApiClient';
 
 // GroupsApi のモック
 jest.mock('../src/groupsApiClient');
 
 // GAS グローバルオブジェクトのモック
-(
-  global as unknown as { Logger: Partial<GoogleAppsScript.Base.Logger> }
-).Logger = {
-  log: jest.fn(),
-};
+(global as unknown as {Logger: Partial<GoogleAppsScript.Base.Logger>}).Logger =
+  {
+    log: jest.fn(),
+  };
 
 describe('syncLogic', () => {
   describe('calculateDesiredState', () => {
@@ -51,7 +50,7 @@ describe('syncLogic', () => {
         new Set([
           'user1@example.com' as MemberEmail,
           'user2@example.com' as MemberEmail,
-        ])
+        ]),
       );
     });
 
@@ -173,7 +172,7 @@ describe('syncLogic', () => {
       (GroupsApi.lookupGroup as jest.Mock).mockReturnValue(null);
 
       expect(() =>
-        syncGroup('test@example.com' as GroupEmail, [], new Set(), new Date())
+        syncGroup('test@example.com' as GroupEmail, [], new Set(), new Date()),
       ).toThrow('グループが見つかりませんでした: test@example.com');
     });
 
@@ -202,16 +201,16 @@ describe('syncLogic', () => {
         'test@example.com' as GroupEmail,
         rows,
         new Set<MemberEmail>(),
-        new Date('2025-06-15')
+        new Date('2025-06-15'),
       );
 
       expect(result.added).toEqual(['newuser@example.com' as MemberEmail]);
       expect(
-        result.addedMembershipNames.get('newuser@example.com' as MemberEmail)
+        result.addedMembershipNames.get('newuser@example.com' as MemberEmail),
       ).toBe('groups/12345/memberships/67890');
       expect(GroupsApi.addMember).toHaveBeenCalledWith(
         groupName,
-        'newuser@example.com'
+        'newuser@example.com',
       );
     });
 
@@ -233,13 +232,13 @@ describe('syncLogic', () => {
         'test@example.com' as GroupEmail,
         rows,
         new Set<MemberEmail>(),
-        new Date('2025-06-15')
+        new Date('2025-06-15'),
       );
 
       expect(result.removed).toEqual(['olduser@example.com' as MemberEmail]);
       expect(GroupsApi.removeMember).toHaveBeenCalledWith(
         groupName,
-        'olduser@example.com'
+        'olduser@example.com',
       );
     });
 
@@ -269,7 +268,7 @@ describe('syncLogic', () => {
         'test@example.com' as GroupEmail,
         rows,
         new Set<MemberEmail>(['admin@example.com' as MemberEmail]),
-        new Date('2025-06-15')
+        new Date('2025-06-15'),
       );
 
       // 操作除外ユーザーなので、追加も削除もされない
@@ -294,7 +293,7 @@ describe('syncLogic', () => {
 
       (GroupsApi.lookupGroup as jest.Mock).mockReturnValue(groupName);
       (GroupsApi.listMembers as jest.Mock).mockReturnValue([
-        { email: 'rem@example.com' as MemberEmail },
+        {email: 'rem@example.com' as MemberEmail},
       ]);
       (GroupsApi.addMember as jest.Mock).mockReturnValue(null); // 追加失敗
       (GroupsApi.removeMember as jest.Mock).mockReturnValue(false); // 削除失敗
@@ -303,7 +302,7 @@ describe('syncLogic', () => {
         'g@example.com' as GroupEmail,
         rows,
         new Set<MemberEmail>(),
-        new Date('2025-06-01')
+        new Date('2025-06-01'),
       );
 
       expect(result.added).toEqual([]);
