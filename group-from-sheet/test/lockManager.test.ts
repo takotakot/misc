@@ -7,7 +7,7 @@ import {
   waitForSheetLock,
   acquireLockWithRetry,
 } from '../src/lockManager';
-import { Config, LOCK_CONFIG, MemberEmail } from '../src/types';
+import {Config, LOCK_CONFIG, MemberEmail} from '../src/types';
 
 // GAS グローバルオブジェクトのモック
 (
@@ -137,7 +137,7 @@ describe('lockManager', () => {
         () => {
           callCount++;
           return callCount <= 2 ? 'ON' : '';
-        }
+        },
       );
 
       const startTime = Date.now();
@@ -171,7 +171,7 @@ describe('lockManager', () => {
         hasLock: jest.fn(), // Added hasLock mock as per instruction
       } as unknown as jest.Mocked<GoogleAppsScript.Lock.Lock>;
       (global.LockService.getDocumentLock as jest.Mock).mockReturnValue(
-        mockLock
+        mockLock,
       );
     });
 

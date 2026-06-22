@@ -1,4 +1,4 @@
-import { syncGroupsFromSheet } from './main';
+import {syncGroupsFromSheet} from './main';
 
 /**
  * シートが開かれると自動的に実行される
@@ -21,14 +21,14 @@ const onOpen = (): void => {
  *
  * @module index
  */
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+
 const onTimeTriggered = (): void => {
   try {
     syncGroupsFromSheet();
   } catch (e) {
     const error = e as Error;
     Logger.log(
-      `[Fatal Error] グループ同期プロセスが異常終了しました: ${error.message}`
+      `[Fatal Error] グループ同期プロセスが異常終了しました: ${error.message}`,
     );
     if (error.stack) {
       Logger.log(error.stack);

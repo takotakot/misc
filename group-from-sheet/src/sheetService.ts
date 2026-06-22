@@ -62,7 +62,7 @@ export const parseDateTime = (value: unknown): Date | null => {
  * ```
  */
 export const loadSheetData = (config: Config): SheetRow[] => {
-  const { dataSheet, dataStartRow } = config;
+  const {dataSheet, dataStartRow} = config;
   const lastRow = dataSheet.getLastRow();
 
   // データ行が存在しない場合
@@ -97,7 +97,7 @@ export const loadSheetData = (config: Config): SheetRow[] => {
 
     if (!startTime || !endTime) {
       Logger.log(
-        `[Warning] 行 ${rowIndex} の日時形式が不正なためスキップしました (Start: ${startTimeValue}, End: ${endTimeValue})`
+        `[Warning] 行 ${rowIndex} の日時形式が不正なためスキップしました (Start: ${startTimeValue}, End: ${endTimeValue})`,
       );
       return;
     }
@@ -130,9 +130,9 @@ export const loadSheetData = (config: Config): SheetRow[] => {
 export const writeMembershipNames = (
   config: Config,
   rows: SheetRow[],
-  results: SyncResult[]
+  results: SyncResult[],
 ): void => {
-  const { dataSheet } = config;
+  const {dataSheet} = config;
 
   results.forEach(result => {
     if (result.added.length === 0) return;
@@ -140,7 +140,8 @@ export const writeMembershipNames = (
     result.added.forEach(memberEmail => {
       // 対象の行を特定（メールアドレスとグループアドレスが一致する最初の行）
       const row = rows.find(
-        r => r.groupEmail === result.groupEmail && r.memberEmail === memberEmail
+        r =>
+          r.groupEmail === result.groupEmail && r.memberEmail === memberEmail,
       );
 
       if (row) {
@@ -150,7 +151,7 @@ export const writeMembershipNames = (
           .getRange(row.rowIndex, COLUMN_INDEX.MEMBERSHIP_NAME + 1)
           .setValue(membershipName);
         Logger.log(
-          `[Output] 行 ${row.rowIndex} にメンバーシップ名を書き込みました: ${membershipName}`
+          `[Output] 行 ${row.rowIndex} にメンバーシップ名を書き込みました: ${membershipName}`,
         );
       }
     });
@@ -168,16 +169,17 @@ export const writeMembershipNames = (
 export const clearRemovedMembershipNames = (
   config: Config,
   rows: SheetRow[],
-  results: SyncResult[]
+  results: SyncResult[],
 ): void => {
-  const { dataSheet } = config;
+  const {dataSheet} = config;
 
   results.forEach(result => {
     if (result.removed.length === 0) return;
 
     result.removed.forEach(memberEmail => {
       const row = rows.find(
-        r => r.groupEmail === result.groupEmail && r.memberEmail === memberEmail
+        r =>
+          r.groupEmail === result.groupEmail && r.memberEmail === memberEmail,
       );
 
       if (row) {
@@ -185,7 +187,7 @@ export const clearRemovedMembershipNames = (
           .getRange(row.rowIndex, COLUMN_INDEX.MEMBERSHIP_NAME + 1)
           .setValue('');
         Logger.log(
-          `[Output] 行 ${row.rowIndex} のメンバーシップ名をクリアしました: ${memberEmail}`
+          `[Output] 行 ${row.rowIndex} のメンバーシップ名をクリアしました: ${memberEmail}`,
         );
       }
     });
@@ -200,9 +202,9 @@ export const clearRemovedMembershipNames = (
  * @returns
  */
 export const writeLastOperationTime = (config: Config, time: Date): void => {
-  const { settingsSheet, lastOperationCellAddress } = config;
+  const {settingsSheet, lastOperationCellAddress} = config;
   settingsSheet.getRange(lastOperationCellAddress).setValue(time);
   Logger.log(
-    `[Output] 最終操作時刻を更新しました: ${time.toLocaleString('ja-JP')}`
+    `[Output] 最終操作時刻を更新しました: ${time.toLocaleString('ja-JP')}`,
   );
 };

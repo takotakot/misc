@@ -2,13 +2,13 @@
  * main モジュールのテスト
  */
 
-import { syncGroupsFromSheet } from '../src/main';
-import { getConfig } from '../src/config';
+import {syncGroupsFromSheet} from '../src/main';
+import {getConfig} from '../src/config';
 import * as LockManager from '../src/lockManager';
-import { loadSheetData } from '../src/sheetService';
+import {loadSheetData} from '../src/sheetService';
 import * as SheetWriter from '../src/sheetService';
 import * as SyncLogic from '../src/syncLogic';
-import { GroupEmail, MemberEmail, Config } from '../src/types';
+import {GroupEmail, MemberEmail, Config} from '../src/types';
 
 // モック
 jest.mock('../src/config');
@@ -17,11 +17,10 @@ jest.mock('../src/sheetService');
 jest.mock('../src/syncLogic');
 
 // GAS グローバル
-(
-  global as unknown as { Logger: Partial<GoogleAppsScript.Base.Logger> }
-).Logger = {
-  log: jest.fn(),
-};
+(global as unknown as {Logger: Partial<GoogleAppsScript.Base.Logger>}).Logger =
+  {
+    log: jest.fn(),
+  };
 
 describe('main', () => {
   const mockConfig: Config = {
@@ -105,9 +104,9 @@ describe('main', () => {
   });
 
   it('変更がない場合は最終操作時刻を更新しない', () => {
-    const mockRows = [{ groupEmail: 'g1@example.com' as GroupEmail }];
+    const mockRows = [{groupEmail: 'g1@example.com' as GroupEmail}];
     const mockResults = [
-      { groupEmail: 'g1@example.com' as GroupEmail, added: [], removed: [] },
+      {groupEmail: 'g1@example.com' as GroupEmail, added: [], removed: []},
     ];
 
     (loadSheetData as jest.Mock).mockReturnValue(mockRows);
@@ -129,7 +128,7 @@ describe('main', () => {
 
     expect(mockRelease).toHaveBeenCalled();
     expect(global.Logger.log).toHaveBeenCalledWith(
-      expect.stringContaining('致命的なエラー')
+      expect.stringContaining('致命的なエラー'),
     );
   });
 
@@ -145,10 +144,10 @@ describe('main', () => {
     }).toThrow('No stack error');
 
     expect(global.Logger.log).toHaveBeenCalledWith(
-      expect.stringContaining('致命的なエラー')
+      expect.stringContaining('致命的なエラー'),
     );
     expect(global.Logger.log).not.toHaveBeenCalledWith(
-      expect.stringContaining('Stack Trace:')
+      expect.stringContaining('Stack Trace:'),
     );
   });
 });

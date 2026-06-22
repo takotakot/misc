@@ -1,4 +1,4 @@
-import { Config, LOCK_CONFIG } from './types';
+import {Config, LOCK_CONFIG} from './types';
 
 /**
  * Google Apps Script 向けのロック管理モジュール
@@ -86,7 +86,7 @@ export const waitForSheetLock = (config: Config, startTime: number): void => {
 
     if (elapsedMs >= LOCK_CONFIG.MAX_LOCK_WAIT_MS) {
       throw new Error(
-        `シートロック待機がタイムアウトしました（${LOCK_CONFIG.MAX_LOCK_WAIT_MS / 1000}秒経過）`
+        `シートロック待機がタイムアウトしました（${LOCK_CONFIG.MAX_LOCK_WAIT_MS / 1000}秒経過）`,
       );
     }
 
@@ -108,7 +108,7 @@ export const waitForSheetLock = (config: Config, startTime: number): void => {
  */
 const tryLockWithExponentialBackoff = (
   lock: GoogleAppsScript.Lock.Lock,
-  startTime: number
+  startTime: number,
 ): boolean => {
   let backoffMs = LOCK_CONFIG.INITIAL_BACKOFF_MS;
 
@@ -124,7 +124,7 @@ const tryLockWithExponentialBackoff = (
     }
 
     Logger.log(
-      `[Lock] ロック取得に失敗しました。${backoffMs}ms 後に再試行します...`
+      `[Lock] ロック取得に失敗しました。${backoffMs}ms 後に再試行します...`,
     );
     // NOTE: 本処理は Google Apps Script の Utilities.sleep に依存しています。
     Utilities.sleep(backoffMs);
@@ -149,8 +149,8 @@ const tryLockWithExponentialBackoff = (
  * 他の無関係な実行を妨げることなく、特定のデータセットに対する排他制御を最小限のスコープで実現します。
  */
 export const acquireLockWithRetry = (
-  startTime: number
-): { lock: GoogleAppsScript.Lock.Lock; release: () => void } => {
+  startTime: number,
+): {lock: GoogleAppsScript.Lock.Lock; release: () => void} => {
   const lock = LockService.getDocumentLock();
   if (!lock) {
     throw new Error('DocumentLock の取得に失敗しました（初期化不可）。');
@@ -160,7 +160,7 @@ export const acquireLockWithRetry = (
 
   if (!success) {
     throw new Error(
-      `システムロックを取得できませんでした（タイムアウト: ${LOCK_CONFIG.MAX_LOCK_WAIT_MS}ms）`
+      `システムロックを取得できませんでした（タイムアウト: ${LOCK_CONFIG.MAX_LOCK_WAIT_MS}ms）`,
     );
   }
 

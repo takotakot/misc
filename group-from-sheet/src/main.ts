@@ -1,4 +1,4 @@
-import { getConfig } from './config';
+import {getConfig} from './config';
 import * as LockManager from './lockManager';
 import {
   loadSheetData,
@@ -6,8 +6,8 @@ import {
   clearRemovedMembershipNames,
   writeLastOperationTime,
 } from './sheetService';
-import { syncGroup } from './syncLogic';
-import { SyncResult, Config, SheetRow, GroupEmail } from './types';
+import {syncGroup} from './syncLogic';
+import {SyncResult, Config, SheetRow, GroupEmail} from './types';
 
 /**
  * 同期処理オーケストレーションモジュール
@@ -63,7 +63,7 @@ export const syncGroupsFromSheet = (): void => {
     const allRows = loadSheetData(config);
     if (allRows.length === 0) {
       Logger.log(
-        '[Notice] 同期対象のデータが0件のため、処理を正常終了します。'
+        '[Notice] 同期対象のデータが0件のため、処理を正常終了します。',
       );
       return;
     }
@@ -77,7 +77,7 @@ export const syncGroupsFromSheet = (): void => {
     });
 
     Logger.log(
-      `[Process] ${rowsByGroup.size} 個のユニークなグループを処理します。`
+      `[Process] ${rowsByGroup.size} 個のユニークなグループを処理します。`,
     );
 
     // 5. グループ別の同期処理（Declarative Reconciliation）
@@ -89,7 +89,7 @@ export const syncGroupsFromSheet = (): void => {
         groupEmail,
         rows,
         config.excludedUsers,
-        currentTime
+        currentTime,
       );
       syncResults.push(result);
     });
@@ -102,25 +102,25 @@ export const syncGroupsFromSheet = (): void => {
 
     // 7. 状態更新の記録
     const hasChanges = syncResults.some(
-      r => r.added.length > 0 || r.removed.length > 0
+      r => r.added.length > 0 || r.removed.length > 0,
     );
 
     if (hasChanges) {
       writeLastOperationTime(config, new Date());
       Logger.log(
-        '[Process] 変更が適用されたため、最終操作時刻を記録しました。'
+        '[Process] 変更が適用されたため、最終操作時刻を記録しました。',
       );
     } else {
       Logger.log('[Process] すべてのグループが同期済みでした（変更なし）。');
     }
 
     Logger.log(
-      '===== [Process Success] すべての同期ステップが完了しました ====='
+      '===== [Process Success] すべての同期ステップが完了しました =====',
     );
   } catch (e) {
     const error = e as Error;
     Logger.log(
-      `[Critical] 同期プロセス中に致命的なエラーが発生しました: ${error.message}`
+      `[Critical] 同期プロセス中に致命的なエラーが発生しました: ${error.message}`,
     );
     if (error.stack) {
       Logger.log(`Stack Trace:\n${error.stack}`);

@@ -8,12 +8,7 @@ import {
   addMember,
   removeMember,
 } from '../src/groupsApiClient';
-import {
-  GroupName,
-  GroupEmail,
-  MemberEmail,
-  MembershipName,
-} from '../src/types';
+import {GroupName, GroupEmail, MemberEmail, MembershipName} from '../src/types';
 
 // GAS グローバルオブジェクトのモック
 (
@@ -81,7 +76,7 @@ describe('groupsApiClient', () => {
           memberships: [
             {
               name: 'm1',
-              preferredMemberKey: { id: 'u1@example.com' },
+              preferredMemberKey: {id: 'u1@example.com'},
               memberDisplayName: 'User 1',
             },
           ],
@@ -91,7 +86,7 @@ describe('groupsApiClient', () => {
           memberships: [
             {
               name: 'm2',
-              preferredMemberKey: { id: 'u2@example.com' },
+              preferredMemberKey: {id: 'u2@example.com'},
               memberDisplayName: 'User 2',
             },
           ],
@@ -103,7 +98,7 @@ describe('groupsApiClient', () => {
       expect(result[0].email).toBe('u1@example.com');
       expect(result[1].email).toBe('u2@example.com');
       expect(
-        mockCloudIdentityGroups.Groups.Memberships.list
+        mockCloudIdentityGroups.Groups.Memberships.list,
       ).toHaveBeenCalledTimes(2);
     });
 
@@ -116,7 +111,7 @@ describe('groupsApiClient', () => {
 
     it('メンバーシップのメールアドレスが欠損している場合はスキップする', () => {
       mockCloudIdentityGroups.Groups.Memberships.list.mockReturnValue({
-        memberships: [{ name: 'm1' }], // preferredMemberKey 欠損
+        memberships: [{name: 'm1'}], // preferredMemberKey 欠損
       });
       expect(listMembers('groups/123' as GroupName)).toEqual([]);
     });
@@ -138,13 +133,13 @@ describe('groupsApiClient', () => {
 
       const result = addMember(
         'groups/123' as GroupName,
-        'new@example.com' as MemberEmail
+        'new@example.com' as MemberEmail,
       );
 
       expect(result?.email).toBe('new@example.com' as MemberEmail);
       expect(result?.name).toBe('groups/123/memberships/456' as MembershipName);
       expect(
-        mockCloudIdentityGroups.Groups.Memberships.create
+        mockCloudIdentityGroups.Groups.Memberships.create,
       ).toHaveBeenCalled();
     });
 
@@ -152,17 +147,17 @@ describe('groupsApiClient', () => {
       mockCloudIdentityGroups.Groups.Memberships.create.mockImplementation(
         () => {
           throw new Error('Creation failed');
-        }
+        },
       );
       expect(
-        addMember('groups/123' as GroupName, 'new@example.com' as MemberEmail)
+        addMember('groups/123' as GroupName, 'new@example.com' as MemberEmail),
       ).toBeNull();
     });
 
     it('レスポンスに情報が含まれない場合は null を返す', () => {
       mockCloudIdentityGroups.Groups.Memberships.create.mockReturnValue({});
       expect(
-        addMember('groups/123' as GroupName, 'new@example.com' as MemberEmail)
+        addMember('groups/123' as GroupName, 'new@example.com' as MemberEmail),
       ).toBeNull();
     });
   });
@@ -175,12 +170,12 @@ describe('groupsApiClient', () => {
 
       const result = removeMember(
         'groups/123' as GroupName,
-        'old@example.com' as MemberEmail
+        'old@example.com' as MemberEmail,
       );
 
       expect(result).toBe(true);
       expect(
-        mockCloudIdentityGroups.Groups.Memberships.remove
+        mockCloudIdentityGroups.Groups.Memberships.remove,
       ).toHaveBeenCalledWith('groups/123/memberships/456');
     });
 
@@ -188,11 +183,11 @@ describe('groupsApiClient', () => {
       mockCloudIdentityGroups.Groups.Memberships.lookup.mockReturnValue(null);
       const result = removeMember(
         'groups/123' as GroupName,
-        'none@example.com' as MemberEmail
+        'none@example.com' as MemberEmail,
       );
       expect(result).toBe(true);
       expect(
-        mockCloudIdentityGroups.Groups.Memberships.remove
+        mockCloudIdentityGroups.Groups.Memberships.remove,
       ).not.toHaveBeenCalled();
     });
 
@@ -200,13 +195,13 @@ describe('groupsApiClient', () => {
       mockCloudIdentityGroups.Groups.Memberships.lookup.mockImplementation(
         () => {
           throw new Error('Lookup failed');
-        }
+        },
       );
       expect(
         removeMember(
           'groups/123' as GroupName,
-          'error@example.com' as MemberEmail
-        )
+          'error@example.com' as MemberEmail,
+        ),
       ).toBe(true);
     });
 
@@ -217,13 +212,13 @@ describe('groupsApiClient', () => {
       mockCloudIdentityGroups.Groups.Memberships.remove.mockImplementation(
         () => {
           throw new Error('Remove failed');
-        }
+        },
       );
       expect(
         removeMember(
           'groups/123' as GroupName,
-          'error@example.com' as MemberEmail
-        )
+          'error@example.com' as MemberEmail,
+        ),
       ).toBe(false);
     });
   });
