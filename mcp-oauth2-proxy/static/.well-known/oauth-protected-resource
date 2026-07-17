@@ -1,0 +1,9 @@
+{
+  "resource": "http://localhost:8080/mcp",
+  "authorization_servers": [
+    "https://accounts.google.com"
+  ],
+  "scopes_supported": [
+    "email"
+  ]
+}

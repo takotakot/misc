@@ -1,0 +1,45 @@
+services:
+  # OAuth2 Proxy (oauth2-proxy)
+  # すべてのアクセスは OAuth2 Proxy を経由して認証されるようにする
+  # 例外を `SKIP_AUTH_ROUTES` で指定する
+  # Upstream は2つ指定している
+  #  # 1. 静的なメタデータ返却用のルート(/.well-known/)
+  #  # 2. Mock MCP Server (http://mock-mcp-server:5678/
+  # 認証を通過したユーザーは、Mock MCP Server にアクセスできる
+  oauth2-proxy:
+    # v x.y.z is tested.
+    image: quay.io/oauth2-proxy/oauth2-proxy:latest
+    ports:
+      - "8080:4180"
+    environment:
+      # See: https://oauth2-proxy.github.io/oauth2-proxy/configuration/overview/
+      OAUTH2_PROXY_HTTP_ADDRESS: "0.0.0.0:4180"
+      OAUTH2_PROXY_API_ROUTES: "^/mcp"
+      
+      # Google OAuth2 設定
+      OAUTH2_PROXY_PROVIDER: "google"
+      OAUTH2_PROXY_CLIENT_ID: "PLACEHOLDER_CLIENT_ID"
+      OAUTH2_PROXY_CLIENT_SECRET: "PLACEHOLDER_CLIENT_SECRET"
+      OAUTH2_PROXY_REDIRECT_URL: "http://localhost:8080/oauth2/callback"
+      # OAUTH2_PROXY_EMAIL_DOMAINS: "*"
+      
+      # メタデータ返却
+      OAUTH2_PROXY_SKIP_AUTH_ROUTES: "^/\\.well-known/oauth-protected-resource"
+      OAUTH2_PROXY_UPSTREAMS: 'file:///etc/static/.well-known/#/.well-known/,http://mock-mcp-server:5678/'
+
+      # API認証の許可（トークン検証）
+      OAUTH2_PROXY_SKIP_JWT_BEARER_TOKENS: "true"
+      OAUTH2_PROXY_EXTRA_JWT_ISSUERS: "https://accounts.google.com=aud"
+
+      OAUTH2_PROXY_COOKIE_SECRET: "abcdefghijklmnopqrstuvwxyz123456"
+    volumes:
+      - ./static/.well-known:/etc/static/.well-known
+
+  # Mock MCP Server (everything)
+  # クライアントに何らかの「正しい」レスポンスを返すために、公開されている MCP サーバーのモックを立ち上げる
+  mock-mcp-server:
+    # See: https://hub.docker.com/r/mcp/everything
+    # See: https://github.com/modelcontextprotocol/servers/tree/main/src/everything
+    # v x.y.z is tested.
+    image: mcp/everything:latest
+    command: sse --port 5678
