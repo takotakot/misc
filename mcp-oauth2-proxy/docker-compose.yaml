@@ -1,0 +1,39 @@
+services:
+  # Lightweight Go OAuth2 Proxy (small-oauth2-proxy)
+  # すべてのアクセスはこの軽量プロキシを経由して認証・転送される
+  # 認証を通過したユーザーは、Mock MCP Server にアクセスできる
+  oauth2-proxy:
+    build: ./small-oauth2-proxy
+    ports:
+      - "8080:4180"
+    environment:
+      OAUTH2_PROXY_HTTP_ADDRESS: "0.0.0.0:4180"
+      
+      # Google OAuth2 / OIDC 設定
+      OAUTH2_PROXY_CLIENT_ID: "number-randomstring.apps.googleusercontent.com"
+      OAUTH2_PROXY_CLIENT_SECRET: "GOCSPX-randomstring"
+      OAUTH2_PROXY_REDIRECT_URL: "http://localhost:8080/oauth2/callback"
+      OAUTH2_PROXY_ALLOWED_EMAILS: "email@example.com"
+
+      RESOURCE_URL: "http://localhost:8080/mcp"
+
+      # リダイレクト/中継先 Upstream
+      OAUTH2_PROXY_UPSTREAMS: "http://mock-mcp-server:5678"
+    depends_on:
+      - mock-mcp-server
+
+  # Mock MCP Server (everything)
+  # クライアントに何らかの「正しい」レスポンスを返すために、公開されている MCP サーバーのモックを立ち上げる
+  mock-mcp-server:
+    # See: https://hub.docker.com/r/mcp/everything
+    # See: https://github.com/modelcontextprotocol/servers/tree/main/src/everything
+    # v x.y.z is tested.
+    image: node:alpine
+    # command: >
+    #   npx -y @modelcontextprotocol/server-everything streamableHttp
+    # command: >
+    #   sh -c "mkdir -p /tmp/mcp && cd /tmp/mcp && npm init -y && npm install @modelcontextprotocol/server-everything media-typer && npx @modelcontextprotocol/server-everything streamableHttp"
+    command: >
+      npx -y @modelcontextprotocol/server-everything streamableHttp
+    environment:
+      PORT: 5678
