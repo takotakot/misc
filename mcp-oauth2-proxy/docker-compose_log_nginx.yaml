@@ -1,0 +1,69 @@
+services:
+  # Nginx 前段プロキシ
+  # クライアントからのすべてのアクセスを受け、HTTPヘッダーをログに記録した上で oauth2-proxy に転送する
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./headers.js:/etc/nginx/headers.js:ro
+      - ./static/.well-known:/usr/share/nginx/html/.well-known:ro
+    depends_on:
+      - oauth2-proxy
+
+  # OAuth2 Proxy (oauth2-proxy)
+  # すべてのアクセスは OAuth2 Proxy を経由して認証されるようにする
+  # 例外を `SKIP_AUTH_ROUTES` で指定する
+  # Upstream は2つ指定している
+  #  # 1. 静的なメタデータ返却用のルート(/.well-known/)
+  #  # 2. Mock MCP Server (http://mock-mcp-server:5678/)
+  # 認証を通過したユーザーは、Mock MCP Server にアクセスできる
+  oauth2-proxy:
+    # v x.y.z is tested.
+    image: quay.io/oauth2-proxy/oauth2-proxy:latest
+    environment:
+      # See: https://oauth2-proxy.github.io/oauth2-proxy/configuration/overview/
+      OAUTH2_PROXY_HTTP_ADDRESS: "0.0.0.0:4180"
+      OAUTH2_PROXY_API_ROUTES: "^/mcp"
+      
+      # Google OAuth2 / OIDC 設定
+      OAUTH2_PROXY_PROVIDER: "oidc"
+      OAUTH2_PROXY_OIDC_ISSUER_URL: "https://accounts.google.com"
+      # OAUTH2_PROXY_PROVIDER: "google"
+      OAUTH2_PROXY_CLIENT_ID: "number-randomstring.apps.googleusercontent.com"
+      OAUTH2_PROXY_CLIENT_SECRET: "GOCSPX-randomstring"
+      OAUTH2_PROXY_REDIRECT_URL: "http://localhost:8080/oauth2/callback"
+      OAUTH2_PROXY_EMAIL_DOMAINS: "*"
+      OAUTH2_PROXY_ALLOWED_EMAILS: "email@example.com"
+      
+      # メタデータ返却
+      # OAUTH2_PROXY_SKIP_AUTH_ROUTES: "^/\\.well-known/oauth-protected-resource,^/mcp,^/mockserver"
+      OAUTH2_PROXY_SKIP_AUTH_ROUTES: "^/\\.well-known/oauth-protected-resource"
+      OAUTH2_PROXY_UPSTREAMS: 'file:///etc/static/.well-known/#/.well-known/,http://mock-mcp-server:5678/'
+      # OAUTH2_PROXY_UPSTREAMS: 'http://mock-mcp-server:5678/'
+
+      # API認証の許可（トークン検証）
+      OAUTH2_PROXY_SKIP_JWT_BEARER_TOKENS: "true"
+      OAUTH2_PROXY_EXTRA_JWT_ISSUERS: "https://accounts.google.com=aud"
+
+      OAUTH2_PROXY_COOKIE_SECRET: "abcdefghijklmnopqrstuvwxyz123456"
+    volumes:
+      - ./static/.well-known:/etc/static/.well-known
+    # command: ["/bin/oauth2-proxy", "--introspect-token=true", "--introspect-url=https://www.googleapis.com/oauth2/v3/tokeninfo"]
+
+  # Mock MCP Server (everything)
+  # クライアントに何らかの「正しい」レスポンスを返すために、公開されている MCP サーバーのモックを立ち上げる
+  mock-mcp-server:
+    # See: https://hub.docker.com/r/mcp/everything
+    # See: https://github.com/modelcontextprotocol/servers/tree/main/src/everything
+    # v x.y.z is tested.
+    image: node:alpine
+    # command: >
+    #   npx -y @modelcontextprotocol/server-everything streamableHttp
+    # command: >
+    #   sh -c "mkdir -p /tmp/mcp && cd /tmp/mcp && npm init -y && npm install @modelcontextprotocol/server-everything media-typer && npx @modelcontextprotocol/server-everything streamableHttp"
+    command: >
+      npx -y @modelcontextprotocol/server-everything streamableHttp
+    environment:
+      PORT: 5678
