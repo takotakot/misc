@@ -15,5 +15,6 @@
     "allowUnusedLabels": false,
     "types": ["jest", "node", "google-apps-script"]
   },
+  "files": ["src/vertexai.d.ts"],
   "include": ["src/**/*", "test/**/*", "rollup.config.mjs"]
 }
