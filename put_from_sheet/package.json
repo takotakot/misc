@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "@google/clasp": "^3.4.1",
-    "@types/google-apps-script": "^2.0.13",
+    "@types/google-apps-script": "^2.0.15",
     "@types/jest": "^30.0.0",
     "@typescript-eslint/eslint-plugin": "^8.61.1",
     "eslint": "^10.13.0",
